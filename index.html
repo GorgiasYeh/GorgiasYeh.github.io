@@ -128,7 +128,12 @@
                                                     loading = false;
                                                     setPromptButtonText();
                                                   })
-                                                  .catch((error) => console.error(error));
+                                                  .catch((error) => {
+                                                    console.error(error);
+                                                    textAreaOutput.value = error;
+                                                    loading = false;
+                                                    setPromptButtonText();
+                                                  });
 
             })
 
