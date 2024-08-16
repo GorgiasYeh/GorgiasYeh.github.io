@@ -81,7 +81,7 @@
             let loading = false;
 
             const init = () => {
-                console.log("init")
+                console.log("init");
                 textAreaSystem.value = sysText;
                 textAreaUser.value = userText;
             };
@@ -98,7 +98,7 @@
 
 
             resetButton.addEventListener("click", () => {
-                console.log("clicked")
+                console.log("clicked");
                 init();
             });
 
@@ -120,10 +120,10 @@
                     }
                 };
 
-                fetch(PromptOpUrl, requestOptions).then((response) => response.text())
+                fetch(PromptOpUrl, requestOptions).then((response) => response.json())
                                                   .then((result) => {
-                                                    console.log(result);
-                                                    textAreaOutput.value = result;
+                                                    console.log(result.generated_prompt);
+                                                    textAreaOutput.value = result.generated_prompt;
                                                   })
                                                   .catch((error) => {
                                                     console.error(error);
