@@ -78,7 +78,7 @@
             const userText = "狗狗";
             const PromptOpUrl = "https://asia-east1-mymoji-dev.cloudfunctions.net/mymoji-prompt-optimize";
             // variable
-            let loading = false
+            let loading = false;
 
             const init = () => {
                 console.log("init")
@@ -96,7 +96,6 @@
                 }
             };
 
-            init();
 
             resetButton.addEventListener("click", () => {
                 console.log("clicked")
@@ -125,18 +124,20 @@
                                                   .then((result) => {
                                                     console.log(result);
                                                     textAreaOutput.value = result;
-                                                    loading = false;
-                                                    setPromptButtonText();
                                                   })
                                                   .catch((error) => {
                                                     console.error(error);
                                                     textAreaOutput.value = error;
+                                                  })
+                                                  .finally(() => {
                                                     loading = false;
                                                     setPromptButtonText();
                                                   });
 
             })
 
+            init();
+            
         </script>
         <!-- script type="module" 需以 localhost 開啟才不會發生 CORS 異常-->
 
