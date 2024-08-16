@@ -9,15 +9,17 @@
     </head>
     <body>
         <div class="container-fluid border">
-            <label
-                for="exampleFormControlInput1"
-                class="form-label"
-            >
-                Prompt 優化
-            </label>
+
             <div class="row border">
+                <label
+                    for="exampleFormControlInput1"
+                    class="form-label"
+                >
+                    <h3 class="text-primary">Prompt 優化</h3>
+                </label>
                 <div class="col-sm border text-center">
                     <div class="row border">
+                        <label for="exampleFormControlInput1" class="form-label">系統預設</label>
                         <!-- 可修改 rows 增加輸入框高度 -->
                         <textarea
                             class="form-control"
@@ -27,6 +29,7 @@
                         ></textarea>
                     </div>
                     <div class="row border">
+                        <label for="exampleFormControlInput1" class="form-label">使用者輸入</label>
                         <!-- 可修改 rows 增加輸入框高度 -->
                         <textarea
                             class="form-control"
@@ -53,6 +56,7 @@
                     </button>
                 </div>
                 <div class="col-sm border text-center">
+                    <label for="exampleFormControlInput1" class="form-label">優化的 Prompt</label>
                     <!-- 可修改 rows 增加輸入框高度 -->
                     <textarea
                         class="form-control"
@@ -62,6 +66,70 @@
                     ></textarea>                    
                 </div>
             </div>
+
+
+            <div class="row border">
+                <label
+                    for="exampleFormControlInput1"
+                    class="form-label"
+                >
+                    <h3 class="text-primary">文字產生圖片</h3>
+                </label>
+                <div class="col-sm border text-center">
+                    <div class="row border">
+                        <label for="exampleFormControlInput1" class="form-label">Positive Prompts</label>
+                        <!-- 可修改 rows 增加輸入框高度 -->
+                        <textarea
+                            class="form-control"
+                            id="exampleFormControlTextarea4"
+                            rows="5" 
+                            placeholder="請輸入 prompts"
+                        ></textarea>
+                    </div>
+                    <div class="row border">
+                        <label for="exampleFormControlInput1" class="form-label">Negative Prompts</label>
+                        <!-- 可修改 rows 增加輸入框高度 -->
+                        <textarea
+                            class="form-control"
+                            id="exampleFormControlTextarea5"
+                            rows="5" 
+                            placeholder="使用者輸入 prompt"
+                        ></textarea>
+                    </div>
+                </div>
+                <div class="col-sm-1 border text-center d-flex flex-column justify-content-center">
+                    <button
+                        id="imageButton"
+                        type="button"
+                        class="btn align-items-center btn-outline-primary"
+                    >
+                        產生圖片
+                    </button>
+                    <button
+                        id="resetButton2"
+                        type="button"
+                        class="btn align-items-center btn-outline-primary"
+                    >
+                        《重置
+                    </button>                    
+                </div>
+                <div class="col-sm border text-center">
+                    <div class="border text-center d-flex flex-column justify-content-center align-items-center">
+                        <label for="exampleFormControlInput1" class="form-label">產生的圖片</label>
+                        <div style="width: 512px; height: 512px" class="border">
+                            <img
+                                id="producedImg"
+                                src="https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg"
+                                style="width: 100%; height: 100%;"
+                                alt="Cinque Terre"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
 
         <!-- Latest compiled JavaScript -->
@@ -71,40 +139,74 @@
             const textAreaSystem = document.getElementById("exampleFormControlTextarea1");
             const textAreaUser = document.getElementById("exampleFormControlTextarea2");
             const textAreaOutput = document.getElementById("exampleFormControlTextarea3");
+            const textAreaPositivePrompts = document.getElementById("exampleFormControlTextarea4");
+            const textAreaNegativePrompts = document.getElementById("exampleFormControlTextarea5");
             const resetButton = document.getElementById("resetButton");
             const promptButton = document.getElementById("promptButton");
+            const imageButton = document.getElementById("imageButton");
+            const resetButton2 = document.getElementById("resetButton2");
+            const producedImg = document.getElementById("producedImg");
             // constant
             const sysText = "你熟悉prompts architecture的產生，我會給你一段描述，你幫我生成一段可以用來生成有正面人像照片寫實風格的prompt，結果請用英文回應。如果描述沒有人像，生成一段亞洲漂亮女生的prompt";
             const userText = "狗狗";
-            const PromptOpUrl = "https://asia-east1-mymoji-dev.cloudfunctions.net/mymoji-prompt-optimize";
+            const promptOpUrl = "https://asia-east1-mymoji-dev.cloudfunctions.net/mymoji-prompt-optimize";
+            const produceImageUrl = "https://mymoji-face-gen-rnbnp7zqba-de.a.run.app";
             // variable
-            let loading = false;
+            // let loading = false;
+            // let loading2 = false;
+
+            const items = {
+                item1: {
+                    loading: false,
+                    button: promptButton
+                },
+                item2: {
+                    loading: false,
+                    button: imageButton
+                }
+            }
 
             const init = () => {
                 console.log("init");
+                resetPrompt();
+                resetPrompt2();
+            };
+
+            const resetPrompt = () => {
                 textAreaSystem.value = sysText;
                 textAreaUser.value = userText;
             };
 
-            const setPromptButtonText = () => {
-                if(loading) {
-                    promptButton.textContent = "waiting...";
-                    promptButton.disabled = true;
+            const resetPrompt2 = () => {
+                textAreaPositivePrompts.value = "";
+                textAreaNegativePrompts.value = "";
+            };
+
+            const setPromptButtonText = (item) => {
+                if(items[item].loading) {
+                    items[item].button.textContent = "waiting...";
+                    items[item].button.disabled = true;
                 } else {
-                    promptButton.textContent = "優化》";
-                    promptButton.disabled = false;
+                    items[item].button.textContent = "優化》";
+                    items[item].button.disabled = false;
                 }
             };
 
 
             resetButton.addEventListener("click", () => {
-                console.log("clicked");
-                init();
+                console.log("resetItem1");
+                resetPrompt();
+            });
+
+            resetButton2.addEventListener("click", () => {
+                console.log("resetItem2");
+                resetPrompt2();
             });
 
             promptButton.addEventListener("click", () => {
-                loading = true;
-                setPromptButtonText();
+                const currentItem = "item1";
+                items[currentItem].loading = true;
+                setPromptButtonText(currentItem);
 
                 const raw = JSON.stringify({
                     "system_content": textAreaSystem.value,
@@ -120,7 +222,7 @@
                     }
                 };
 
-                fetch(PromptOpUrl, requestOptions).then((response) => response.json())
+                fetch(promptOpUrl, requestOptions).then((response) => response.json())
                                                   .then((result) => {
                                                     console.log(result.generated_prompt);
                                                     textAreaOutput.value = result.generated_prompt;
@@ -130,11 +232,44 @@
                                                     textAreaOutput.value = error;
                                                   })
                                                   .finally(() => {
-                                                    loading = false;
-                                                    setPromptButtonText();
+                                                    items[currentItem].loading = false;
+                                                    setPromptButtonText(currentItem);
                                                   });
 
-            })
+            });
+            
+            imageButton.addEventListener("click", async () => {
+                const currentItem = "item2";
+                items[currentItem].loading = true;
+                setPromptButtonText(currentItem);
+
+                const raw = JSON.stringify({
+                    "prompt": textAreaPositivePrompts.value,
+                    "negative_prompt": textAreaNegativePrompts.value
+                });
+
+                const requestOptions = {
+                    method: "POST",
+                    body: raw,
+                    headers: {
+                        "user-agent": "Mozilla/4.0 MDN Example",
+                        "content-type": "application/json",
+                    },
+                    signal: AbortSignal.timeout(60000000000)
+                };
+
+                try{
+                    const response = await fetch(produceImageUrl, requestOptions);
+                    const imageBlob = await response.blob();
+                    const imageUrl = URL.createObjectURL(imageBlob);
+                    producedImg.src = imageUrl;
+                } catch(error) {
+                    console.log(error)
+                } finally {
+                    items[currentItem].loading = false;
+                    setPromptButtonText(currentItem);
+                }
+            });
 
             init();
             
