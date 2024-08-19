@@ -77,7 +77,7 @@
                 </label>
                 <div class="col-sm border text-center">
                     <div class="row border">
-                        <label for="exampleFormControlInput1" class="form-label">Positive Prompts</label>
+                        <label for="exampleFormControlInput1" class="form-label">Prompts</label>
                         <!-- 可修改 rows 增加輸入框高度 -->
                         <textarea
                             class="form-control"
@@ -151,18 +151,17 @@
             const userText = "狗狗";
             const promptOpUrl = "https://asia-east1-mymoji-dev.cloudfunctions.net/mymoji-prompt-optimize";
             const produceImageUrl = "https://mymoji-face-gen-rnbnp7zqba-de.a.run.app";
-            // variable
-            // let loading = false;
-            // let loading2 = false;
 
             const items = {
                 item1: {
                     loading: false,
-                    button: promptButton
+                    button: promptButton,
+                    text: "優化》"
                 },
                 item2: {
                     loading: false,
-                    button: imageButton
+                    button: imageButton,
+                    text: "產圖片"
                 }
             }
 
@@ -187,7 +186,7 @@
                     items[item].button.textContent = "waiting...";
                     items[item].button.disabled = true;
                 } else {
-                    items[item].button.textContent = "優化》";
+                    items[item].button.textContent = items[item].text;
                     items[item].button.disabled = false;
                 }
             };
@@ -264,7 +263,8 @@
                     const imageUrl = URL.createObjectURL(imageBlob);
                     producedImg.src = imageUrl;
                 } catch(error) {
-                    console.log(error)
+                    console.log(error);
+                    alert("Timeout");
                 } finally {
                     items[currentItem].loading = false;
                     setPromptButtonText(currentItem);
