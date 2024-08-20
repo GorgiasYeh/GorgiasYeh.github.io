@@ -181,7 +181,7 @@
                         <label for="exampleFormControlInput1" class="form-label">產生的圖片</label>
                         <div style="width: 512px; height: 512px" class="border">
                             <img
-                                id="producedIm2g2"
+                                id="producedImg2"
                                 src="https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg"
                                 style="width: 100%; height: 100%;"
                                 alt="Cinque Terre"
@@ -502,59 +502,60 @@
             })
 
             produceButton.addEventListener("click", async () => {
-                console.log("換臉產圖");
+                console.log("換臉產圖")
                 const currentItem = "item4";
                 items[currentItem].loading = true;
                 setPromptButtonText(currentItem);
-            
-                if (sourceImg.src === imageDefault) {
+
+                if (sourceImg.src == imageDefault) {
                     alert("請選擇來源圖片");
                     items[currentItem].loading = false;
                     setPromptButtonText(currentItem);
                     return false;
-                }
-            
-                if (targetImg.src === imageDefault) {
+                };
+
+                if (targetImg.src == imageDefault) {
                     alert("請選擇目標圖片");
                     items[currentItem].loading = false;
-                    setPromptButtonText(currentItem);
+                    setPromptButtonText(currentItem);                    
                     return false;
                 }
-            
-                const sourceFile = sourceImgUploader.files[0];
-                const targetFile = targetImgUploader.files[0];
-            
-                if (!sourceFile || !targetFile) {
-                    alert("請選擇來源和目標圖片");
-                    items[currentItem].loading = false;
-                    setPromptButtonText(currentItem);
-                    return false;
-                }
-            
-                const formData = new FormData();
-                formData.append("source_image", sourceFile);
-                formData.append("target_image", targetFile);
-            
+                
+                const source = await fetch(sourceImg.src);
+                const sourceBlob = await source.blob();
+                const target = await fetch(targetImg.src);
+                const targetBlob = await target.blob();
+
+                const raw = new FormData();
+                raw.append("source_image", sourceBlob);
+                raw.append("target_image", targetBlob);
+
+                // const raw = {
+                //     "source_image": sourceBlob,
+                //     "target_image": targetBlob
+                // }
+
                 const requestOptions = {
                     method: "POST",
-                    body: formData,
+                    body: raw,
                     headers: {
-                        "user-agent": "Mozilla/4.0 MDN Example"
+                        "user-agent": "Mozilla/4.0 MDN Example",
+                        // "content-type": "multipart/form-data",
                     },
                 };
-            
-                try {
+                
+                try{
                     const response = await fetch(faceChangeUrl, requestOptions);
                     const imageBlob = await response.blob();
                     const imageUrl = URL.createObjectURL(imageBlob);
                     producedImg2.src = imageUrl;
-                } catch (error) {
+                } catch(error) {
                     console.log(error);
                 } finally {
                     items[currentItem].loading = false;
                     setPromptButtonText(currentItem);
-                }
-            });
+                }                                
+            })
 
             sourceImgUploader.addEventListener("change", (e) => {
                 const imageBlob = e.target.files[0];
