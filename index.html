@@ -67,7 +67,6 @@
                 </div>
             </div>
 
-
             <div class="row border">
                 <label
                     for="exampleFormControlInput1"
@@ -118,7 +117,7 @@
                         <label for="exampleFormControlInput1" class="form-label">產生的圖片</label>
                         <div style="width: 512px; height: 512px" class="border">
                             <img
-                                id="producedImg"
+                                id="producedIm2g"
                                 src="https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg"
                                 style="width: 100%; height: 100%;"
                                 alt="Cinque Terre"
@@ -127,6 +126,70 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row border">
+                <label
+                    for="exampleFormControlInput1"
+                    class="form-label"
+                >
+                    <h3 class="text-primary">換臉</h3>
+                </label>
+                <div class="col-sm border text-center">
+                    <div class="row border justify-content-center">
+                        <label for="exampleFormControlInput1" class="form-label">來源圖片</label>
+                        <div><input id="sourceImgUploader" type="file" accept="image/*"/></div>
+                        <div style="width: 256px; height: 256px" class="border">
+                            <img
+                                id="sourceImg"
+                                src="https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg"
+                                style="width: 100%; height: 100%;"
+                                alt="Cinque Terre"
+                            />
+                        </div>
+                    </div>
+                    <div class="row border justify-content-center">
+                        <label for="exampleFormControlInput1" class="form-label">目標圖片</label>
+                        <div><input id="targetImgUploader" type="file" accept="image/*"/></div>
+                        <div style="width: 256px; height: 256px" class="border">
+                            <img
+                                id="targetImg"
+                                src="https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg"
+                                style="width: 100%; height: 100%;"
+                                alt="Cinque Terre"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1 border text-center d-flex flex-column justify-content-center">
+                    <button
+                        id="produceButton"
+                        type="button"
+                        class="btn align-items-center btn-outline-primary"
+                    >
+                        換臉》
+                    </button>
+                    <button
+                        id="resetButton4"
+                        type="button"
+                        class="btn align-items-center btn-outline-primary"
+                    >
+                        《重置
+                    </button>
+                </div>
+                <div class="col-sm border text-center">
+                    <div class="border text-center d-flex flex-column justify-content-center align-items-center">
+                        <label for="exampleFormControlInput1" class="form-label">產生的圖片</label>
+                        <div style="width: 512px; height: 512px" class="border">
+                            <img
+                                id="producedIm2g2"
+                                src="https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg"
+                                style="width: 100%; height: 100%;"
+                                alt="Cinque Terre"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>            
 
             <div class="row border">
                 <label
@@ -218,21 +281,30 @@
             const promptButton = document.getElementById("promptButton");
             const imageButton = document.getElementById("imageButton");
             const resetButton2 = document.getElementById("resetButton2");
-            const producedImg = document.getElementById("producedImg");
+            const producedIm2g = document.getElementById("producedIm2g");
             const queryButton = document.getElementById("queryButton");
             const resetButton3 = document.getElementById("resetButton3");
             const maxTokenRange = document.getElementById("customRange3");
             const tokenspan = document.getElementById("tokenspan");
             const temperatureRange = document.getElementById("customRange4");
             const temperaturespan = document.getElementById("temperaturespan");
+            const sourceImgUploader = document.getElementById("sourceImgUploader");
+            const sourceImg = document.getElementById("sourceImg");
+            const targetImgUploader = document.getElementById("targetImgUploader");
+            const targetImg = document.getElementById("targetImg");
+            const resetButton4 = document.getElementById("resetButton4");
+            const producedImg2 = document.getElementById("producedImg2");
+            const produceButton = document.getElementById("produceButton");
             // constant
             const sysText = "你熟悉prompts architecture的產生，我會給你一段描述，你幫我生成一段可以用來生成有正面人像照片寫實風格的prompt，結果請用英文回應。如果描述沒有人像，生成一段亞洲漂亮女生的prompt";
             const userText = "狗狗";
             const promptOpUrl = "https://asia-east1-mymoji-dev.cloudfunctions.net/mymoji-prompt-optimize";
             const produceImageUrl = "https://mymoji-face-gen-rnbnp7zqba-de.a.run.app";
-            const npcUrl = "https://asia-east1-mymoji-dev.cloudfunctions.net/function-npc-test"
-            const maxTokens = 1024
-            const temperature = 0.2
+            const npcUrl = "https://asia-east1-mymoji-dev.cloudfunctions.net/function-npc-test";
+            const faceChangeUrl = "https://asia-east1-mymoji-dev.cloudfunctions.net/mymoji-face-change";
+            const maxTokensDefault = 1024;
+            const temperatureDefault = 0.2;
+            const imageDefault = "https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg";
 
             const items = {
                 item1: {
@@ -249,7 +321,12 @@
                     loading: false,
                     button: queryButton,
                     text: "對話》"
-                }
+                },
+                item4: {
+                    loading: false,
+                    button: produceButton,
+                    text: "換臉》"
+                },
             }
 
             const init = () => {
@@ -272,10 +349,16 @@
             const resetPrompt3 = () => {
                 textAreaQuery.value = "";
                 textAreaResponse.value = "";
-                maxTokenRange.value = maxTokens;
-                tokenspan.textContent = maxTokens;
-                temperatureRange.value = temperature;
-                temperaturespan.textContent = temperature;
+                maxTokenRange.value = maxTokensDefault;
+                tokenspan.textContent = maxTokensDefault;
+                temperatureRange.value = temperatureDefault;
+                temperaturespan.textContent = temperatureDefault;
+            }
+
+            const resetImage = () => {
+                sourceImg.src = imageDefault;
+                targetImg.src = imageDefault;
+                producedImg2.src = imageDefault;
             }
 
             const setPromptButtonText = (item) => {
@@ -310,7 +393,12 @@
             resetButton3.addEventListener("click", () => {
                 console.log("resetItem3");
                 resetPrompt3();
-            });            
+            }); 
+            
+            resetButton4.addEventListener("click", () => {
+                console.log("resetItem4");
+                resetImage();
+            }); 
 
             promptButton.addEventListener("click", () => {
                 const currentItem = "item1";
@@ -411,6 +499,69 @@
                     items[currentItem].loading = false;
                     setPromptButtonText(currentItem);
                 }                
+            })
+
+            produceButton.addEventListener("click", async () => {
+                console.log("換臉產圖")
+                const currentItem = "item4";
+                items[currentItem].loading = true;
+                setPromptButtonText(currentItem);
+
+                if (sourceImg.src == imageDefault) {
+                    alert("請選擇來源圖片");
+                    items[currentItem].loading = false;
+                    setPromptButtonText(currentItem);
+                    return false;
+                };
+
+                if (targetImg.src == imageDefault) {
+                    alert("請選擇目標圖片");
+                    items[currentItem].loading = false;
+                    setPromptButtonText(currentItem);                    
+                    return false;
+                }
+                
+                const source = await fetch(sourceImg.src);
+                const sourceBlob = await source.blob();
+                const target = await fetch(targetImg.src);
+                const targetBlob = await target.blob();
+
+                const raw = new FormData();
+                raw.append("source_image", sourceBlob);
+                raw.append("target_image", targetBlob);
+
+                const requestOptions = {
+                    method: "POST",
+                    body: raw,
+                    headers: {
+                        "user-agent": "Mozilla/4.0 MDN Example",
+                        "content-type": "multipart/form-data",
+                    },
+                };
+                
+                try{
+                    const response = await fetch(faceChangeUrl, requestOptions);
+                    const imageBlob = await response.blob();
+                    const imageUrl = URL.createObjectURL(imageBlob);
+                    producedImg2.src = imageUrl;
+                } catch(error) {
+                    console.log(error);
+                } finally {
+                    items[currentItem].loading = false;
+                    setPromptButtonText(currentItem);
+                }                                
+            })
+
+            sourceImgUploader.addEventListener("change", (e) => {
+                const imageBlob = e.target.files[0];
+                const imageUrl = URL.createObjectURL(imageBlob);
+                sourceImg.src = imageUrl;
+            })
+
+            targetImgUploader.addEventListener("change", (e)=> {
+                const imageBlob = e.target.files[0];
+                const imageUrl = URL.createObjectURL(imageBlob);
+                targetImg.src = imageUrl;
             })
 
             init();
