@@ -502,55 +502,59 @@
             })
 
             produceButton.addEventListener("click", async () => {
-                console.log("換臉產圖")
+                console.log("換臉產圖");
                 const currentItem = "item4";
                 items[currentItem].loading = true;
                 setPromptButtonText(currentItem);
-
-                if (sourceImg.src == imageDefault) {
+            
+                if (sourceImg.src === imageDefault) {
                     alert("請選擇來源圖片");
                     items[currentItem].loading = false;
                     setPromptButtonText(currentItem);
                     return false;
-                };
-
-                if (targetImg.src == imageDefault) {
+                }
+            
+                if (targetImg.src === imageDefault) {
                     alert("請選擇目標圖片");
                     items[currentItem].loading = false;
-                    setPromptButtonText(currentItem);                    
+                    setPromptButtonText(currentItem);
                     return false;
                 }
-                
-                const source = await fetch(sourceImg.src);
-                const sourceBlob = await source.blob();
-                const target = await fetch(targetImg.src);
-                const targetBlob = await target.blob();
-
-                const raw = new FormData();
-                raw.append("source_image", sourceBlob);
-                raw.append("target_image", targetBlob);
-
+            
+                const sourceFile = sourceImgUploader.files[0];
+                const targetFile = targetImgUploader.files[0];
+            
+                if (!sourceFile || !targetFile) {
+                    alert("請選擇來源和目標圖片");
+                    items[currentItem].loading = false;
+                    setPromptButtonText(currentItem);
+                    return false;
+                }
+            
+                const formData = new FormData();
+                formData.append("source_image", sourceFile);
+                formData.append("target_image", targetFile);
+            
                 const requestOptions = {
                     method: "POST",
-                    body: raw,
+                    body: formData,
                     headers: {
-                        "user-agent": "Mozilla/4.0 MDN Example",
-                        "content-type": "multipart/form-data",
+                        "user-agent": "Mozilla/4.0 MDN Example"
                     },
                 };
-                
-                try{
+            
+                try {
                     const response = await fetch(faceChangeUrl, requestOptions);
                     const imageBlob = await response.blob();
                     const imageUrl = URL.createObjectURL(imageBlob);
                     producedImg2.src = imageUrl;
-                } catch(error) {
+                } catch (error) {
                     console.log(error);
                 } finally {
                     items[currentItem].loading = false;
                     setPromptButtonText(currentItem);
-                }                                
-            })
+                }
+            });
 
             sourceImgUploader.addEventListener("change", (e) => {
                 const imageBlob = e.target.files[0];
