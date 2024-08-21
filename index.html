@@ -1004,6 +1004,7 @@
                 const source = await fetch(sourceImg2.src);
                 const sourceBlob = await source.blob();
 
+                console.log(sourceBlob);
                 const raw = new FormData();
                 raw.append("imageFile", sourceBlob);
                 raw.append("prompt", promptss);
@@ -1019,7 +1020,6 @@
 
                 try{
                     const response = await fetch(styleUrl, requestOptions);
-                    console.log(response.text())
                     const imageBlob = await response.blob();
                     const imageUrl = URL.createObjectURL(imageBlob);
                     producedImg3.src = imageUrl;
