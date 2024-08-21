@@ -209,6 +209,77 @@
 
                 <div class="accordion-item">
                     <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                            風格轉換
+                        </button>
+                    </h2>
+
+                    <div id="collapse5" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <div class="row border">
+                                <div class="col-sm border text-center">
+                                    <div class="row border justify-content-center">
+                                        <label for="exampleFormControlInput1" class="form-label">來源圖片</label>
+                                        <div><input id="sourceImgUploader2" type="file" accept="image/*"/></div>
+                                        <div style="width: 256px; height: 256px" class="border">
+                                            <img
+                                                id="sourceImg2"
+                                                src="https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg"
+                                                style="width: 100%; height: 100%;"
+                                                alt="Cinque Terre"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="row border">
+                                        <label for="exampleFormControlInput1" class="form-label">Prompts</label>
+                                        <textarea
+                                            class="form-control"
+                                            id="exampleFormControlTextarea8"
+                                            rows="5" 
+                                            placeholder="請輸入 prompts"
+                                        ></textarea>
+                                    </div>
+                                    <label for="exampleFormControlInput1" class="form-label">風格</label>
+                                    <select id="styleSelector" class="form-select" aria-label="Default select example">
+                                        <option selected>Open this select menu</option>
+                                    </select>                                    
+                                </div>
+                                <div class="col-sm-1 border text-center d-flex flex-column justify-content-center">
+                                    <button
+                                        id="imageButton2"
+                                        type="button"
+                                        class="btn align-items-center btn-outline-primary"
+                                    >
+                                        產圖片
+                                    </button>
+                                    <button
+                                        id="resetButton5"
+                                        type="button"
+                                        class="btn align-items-center btn-outline-primary"
+                                    >
+                                        《重置
+                                    </button>                    
+                                </div>
+                                <div class="col-sm border text-center">
+                                    <div class="border text-center d-flex flex-column justify-content-center align-items-center">
+                                        <label for="exampleFormControlInput1" class="form-label">產生的圖片</label>
+                                        <div style="width: 512px; height: 512px" class="border">
+                                            <img
+                                                id="producedImg3"
+                                                src="https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg"
+                                                style="width: 100%; height: 100%;"
+                                                alt="Cinque Terre"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
                             NPC
                         </button>
@@ -546,6 +617,7 @@
             const textAreaOutput = document.getElementById("exampleFormControlTextarea3");
             const textAreaPositivePrompts = document.getElementById("exampleFormControlTextarea4");
             const textAreaNegativePrompts = document.getElementById("exampleFormControlTextarea5");
+            const textAreaStylePrompts = document.getElementById("exampleFormControlTextarea8");
             const textAreaQuery = document.getElementById("exampleFormControlTextarea6");
             const textAreaResponse = document.getElementById("exampleFormControlTextarea7");
             const resetButton = document.getElementById("resetButton");
@@ -566,6 +638,12 @@
             const resetButton4 = document.getElementById("resetButton4");
             const producedImg2 = document.getElementById("producedImg2");
             const produceButton = document.getElementById("produceButton");
+            const resetButton5 = document.getElementById("resetButton5");
+            const imageButton2 = document.getElementById("imageButton2");
+            const sourceImgUploader2 = document.getElementById("sourceImgUploader2");
+            const sourceImg2 = document.getElementById("sourceImg2");
+            const producedImg3 = document.getElementById("producedImg3");
+            const styleSelector = document.getElementById("styleSelector");
             // constant
             const sysText = "你熟悉prompts architecture的產生，我會給你一段描述，你幫我生成一段可以用來生成有正面人像照片寫實風格的prompt，結果請用英文回應。如果描述沒有人像，生成一段亞洲漂亮女生的prompt";
             const userText = "狗狗";
@@ -573,6 +651,7 @@
             const produceImageUrl = "https://mymoji-face-gen-rnbnp7zqba-de.a.run.app";
             const npcUrl = "https://asia-east1-mymoji-dev.cloudfunctions.net/function-npc-test";
             const faceChangeUrl = "https://asia-east1-mymoji-dev.cloudfunctions.net/mymoji-face-change";
+            const styleUrl = "https://asia-east1-mymoji-dev.cloudfunctions.net/mymoji-styletrans-gen";
             const maxTokensDefault = 1024;
             const temperatureDefault = 0.2;
             const imageDefault = "https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg";
@@ -607,7 +686,17 @@
                 "西班牙男鬥牛士",
                 "埃及女法老",
                 "超級英雄風格男戰士"
-            ]
+            ];
+            const styles = {
+                "1e4565ba-2027-4738-8bba-be03154591fd": "構成主義",
+                "27399a86-6590-4d76-b630-0eb9e0715a99": "線條藝術",
+                "0a9c9f10-43ee-414e-8b3f-0dff58b0598b": "裝飾藝術",
+                "6d9c531b-d16e-44eb-a27d-28a791912ae0": "立體派",
+                "753a450e-c3b3-4c4d-aab9-e89f8dac22fe": "時尚",
+                "7f7ff7db-850b-4675-9693-9f38a538abdd": "水彩畫",
+                "50ba4395-30f9-4739-9679-ec18527a6a2e": "新藝術",
+                "49d23298-0f43-445e-b7e9-919dd4246263": "漫畫"
+            }
             
             const items = {
                 item1: {
@@ -630,6 +719,11 @@
                     button: produceButton,
                     text: "換臉》"
                 },
+                item5: {
+                    loading: false,
+                    button: imageButton2,
+                    text: "產圖片"
+                }
             }
 
             const init = () => {
@@ -637,6 +731,8 @@
                 resetPrompt();
                 resetPrompt2();
                 resetPrompt3();
+                resetPrompt4();
+                generateOptions();
             };
 
             const resetPrompt = () => {
@@ -662,6 +758,15 @@
                 sourceImg.src = imageDefault;
                 targetImg.src = imageDefault;
                 producedImg2.src = imageDefault;
+                sourceImgUploader.value = "";
+                targetImgUploader.value = "";
+            }
+
+            const resetPrompt4 = () => {
+                textAreaStylePrompts.value = "";
+                sourceImg2.src = imageDefault;
+                producedImg3.src = imageDefault;
+                sourceImgUploader2.value = "";
             }
 
             const setPromptButtonText = (item) => {
@@ -682,6 +787,14 @@
                 temperaturespan.textContent = value;
             }
 
+            const generateOptions = () => {
+                Object.keys(styles).forEach(k => {
+                    let option = document.createElement("option");
+                    option.value = k;
+                    option.textContent = styles[k];
+                    styleSelector.append(option);
+                })
+            }
 
             resetButton.addEventListener("click", () => {
                 console.log("resetItem1");
@@ -701,7 +814,12 @@
             resetButton4.addEventListener("click", () => {
                 console.log("resetItem4");
                 resetImage();
-            }); 
+            });
+
+            resetButton5.addEventListener("click", () => {
+                console.log("resetItem5");
+                resetPrompt4();
+            });
 
             promptButton.addEventListener("click", () => {
                 const currentItem = "item1";
@@ -860,6 +978,59 @@
                 }                                
             })
 
+            imageButton2.addEventListener("click", async () => {
+                console.log("風格轉換");
+                const currentItem = "item5";
+                items[currentItem].loading = true;
+                setPromptButtonText(currentItem);
+
+                let style = styleSelector.value;
+                let promptss = textAreaStylePrompts.value;
+                
+                if (sourceImg2.src == imageDefault) {
+                    alert("請選擇來源圖片");
+                    items[currentItem].loading = false;
+                    setPromptButtonText(currentItem);
+                    return false;
+                };
+
+                if (style == "Open this select menu") {
+                    alert("請選擇風格");
+                    items[currentItem].loading = false;
+                    setPromptButtonText(currentItem);
+                    return false;
+                }
+
+                const source = await fetch(sourceImg2.src);
+                const sourceBlob = await source.blob();
+
+                const raw = new FormData();
+                raw.append("imageFile", sourceBlob);
+                raw.append("prompt", promptss);
+                raw.append("styleId", style);
+
+                const requestOptions = {
+                    method: "POST",
+                    body: raw,
+                    headers: {
+                        "user-agent": "Mozilla/4.0 MDN Example",
+                    },
+                };
+
+                try{
+                    const response = await fetch(styleUrl, requestOptions);
+                    console.log(response.text())
+                    const imageBlob = await response.blob();
+                    const imageUrl = URL.createObjectURL(imageBlob);
+                    producedImg3.src = imageUrl;
+                } catch(error) {
+                    console.log(error);
+                } finally {
+                    items[currentItem].loading = false;
+                    setPromptButtonText(currentItem);
+                }
+            })
+
             sourceImgUploader.addEventListener("change", (e) => {
                 const imageBlob = e.target.files[0];
                 const imageUrl = URL.createObjectURL(imageBlob);
@@ -870,6 +1041,12 @@
                 const imageBlob = e.target.files[0];
                 const imageUrl = URL.createObjectURL(imageBlob);
                 targetImg.src = imageUrl;
+            })
+
+            sourceImgUploader2.addEventListener("change", (e) => {
+                const imageBlob = e.target.files[0];
+                const imageUrl = URL.createObjectURL(imageBlob);
+                sourceImg2.src = imageUrl;
             })
 
             init();
