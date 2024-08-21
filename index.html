@@ -9,8 +9,286 @@
     </head>
     <body>
         <div class="container-fluid border">
+            <div class="accordion" id="accordionExample">
 
-            <div class="row border">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Prompt 優化
+                        </button>
+                    </h2>
+
+                    <div id="collapseOne" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            <div class="row border">
+                                <div class="col-sm border text-center">
+                                    <div class="row border">
+                                        <label for="exampleFormControlInput1" class="form-label">系統預設</label>
+                                        <textarea
+                                            class="form-control"
+                                            id="exampleFormControlTextarea1"
+                                            rows="5" 
+                                            placeholder="系統預設輸入 prompt"
+                                        ></textarea>
+                                    </div>
+                                    <div class="row border">
+                                        <label for="exampleFormControlInput1" class="form-label">使用者輸入</label>
+                                        <textarea
+                                            class="form-control"
+                                            id="exampleFormControlTextarea2"
+                                            rows="5" 
+                                            placeholder="使用者輸入 prompt"
+                                        ></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1 border text-center d-flex flex-column justify-content-center">
+                                    <button
+                                        id="promptButton"
+                                        type="button"
+                                        class="btn align-items-center btn-outline-primary"
+                                    >
+                                        優化》
+                                    </button>
+                                    <button
+                                        id="resetButton"
+                                        type="button"
+                                        class="btn align-items-center btn-outline-primary"
+                                    >
+                                        《重置
+                                    </button>
+                                </div>
+                                <div class="col-sm border text-center">
+                                    <label for="exampleFormControlInput1" class="form-label">優化的 Prompt</label>
+                                    <textarea
+                                        class="form-control"
+                                        id="exampleFormControlTextarea3"
+                                        rows="10"
+                                        disabled="true"
+                                    ></textarea>                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            文字產生圖片
+                        </button>
+                    </h2>
+
+                    <div id="collapseTwo" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <div class="row border">
+                                <div class="col-sm border text-center">
+                                    <div class="row border">
+                                        <label for="exampleFormControlInput1" class="form-label">Prompts</label>
+                                        <!-- 可修改 rows 增加輸入框高度 -->
+                                        <textarea
+                                            class="form-control"
+                                            id="exampleFormControlTextarea4"
+                                            rows="5" 
+                                            placeholder="請輸入 prompts"
+                                        ></textarea>
+                                    </div>
+                                    <div class="row border">
+                                        <label for="exampleFormControlInput1" class="form-label">Negative Prompts</label>
+                                        <!-- 可修改 rows 增加輸入框高度 -->
+                                        <textarea
+                                            class="form-control"
+                                            id="exampleFormControlTextarea5"
+                                            rows="5" 
+                                            placeholder="使用者輸入 prompt"
+                                        ></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1 border text-center d-flex flex-column justify-content-center">
+                                    <button
+                                        id="imageButton"
+                                        type="button"
+                                        class="btn align-items-center btn-outline-primary"
+                                    >
+                                        產圖片
+                                    </button>
+                                    <button
+                                        id="resetButton2"
+                                        type="button"
+                                        class="btn align-items-center btn-outline-primary"
+                                    >
+                                        《重置
+                                    </button>                    
+                                </div>
+                                <div class="col-sm border text-center">
+                                    <div class="border text-center d-flex flex-column justify-content-center align-items-center">
+                                        <label for="exampleFormControlInput1" class="form-label">產生的圖片</label>
+                                        <div style="width: 512px; height: 512px" class="border">
+                                            <img
+                                                id="producedIm2g"
+                                                src="https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg"
+                                                style="width: 100%; height: 100%;"
+                                                alt="Cinque Terre"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                            換臉
+                        </button>
+                    </h2>
+
+                    <div id="collapse3" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <div class="row border">
+                                <div class="col-sm border text-center">
+                                    <div class="row border justify-content-center">
+                                        <label for="exampleFormControlInput1" class="form-label">來源圖片</label>
+                                        <div><input id="sourceImgUploader" type="file" accept="image/*"/></div>
+                                        <div style="width: 256px; height: 256px" class="border">
+                                            <img
+                                                id="sourceImg"
+                                                src="https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg"
+                                                style="width: 100%; height: 100%;"
+                                                alt="Cinque Terre"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="row border justify-content-center">
+                                        <label for="exampleFormControlInput1" class="form-label">目標圖片</label>
+                                        <div><input id="targetImgUploader" type="file" accept="image/*"/></div>
+                                        <div style="width: 256px; height: 256px" class="border">
+                                            <img
+                                                id="targetImg"
+                                                src="https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg"
+                                                style="width: 100%; height: 100%;"
+                                                alt="Cinque Terre"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1 border text-center d-flex flex-column justify-content-center">
+                                    <button
+                                        id="produceButton"
+                                        type="button"
+                                        class="btn align-items-center btn-outline-primary"
+                                    >
+                                        換臉》
+                                    </button>
+                                    <button
+                                        id="resetButton4"
+                                        type="button"
+                                        class="btn align-items-center btn-outline-primary"
+                                    >
+                                        《重置
+                                    </button>
+                                </div>
+                                <div class="col-sm border text-center">
+                                    <div class="border text-center d-flex flex-column justify-content-center align-items-center">
+                                        <label for="exampleFormControlInput1" class="form-label">產生的圖片</label>
+                                        <div style="width: 512px; height: 512px" class="border">
+                                            <img
+                                                id="producedImg2"
+                                                src="https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg"
+                                                style="width: 100%; height: 100%;"
+                                                alt="Cinque Terre"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>            
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                            NPC
+                        </button>
+                    </h2>
+
+                    <div id="collapse4" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <div class="row border">
+                                <div class="col-sm border text-center">
+                                    <div class="row border">
+                                        <label for="exampleFormControlInput1" class="form-label">提問區</label>
+                                        <!-- 可修改 rows 增加輸入框高度 -->
+                                        <textarea
+                                            class="form-control"
+                                            id="exampleFormControlTextarea6"
+                                            rows="5" 
+                                            placeholder="請輸入對話"
+                                        ></textarea>
+                                    </div>
+                                    <div class="row border mt-3">
+                                        <label for="customRange3" class="form-label">最大回應字數</label>
+                                        <input
+                                            type="range"
+                                            class="form-range"
+                                            min="0"
+                                            max="5000"
+                                            step="1"
+                                            id="customRange3"
+                                            onchange="changeMaxTokens(this.value)"
+                                        >
+                                        <span id="tokenspan"></span>
+                                    </div>
+                                    <div class="row border mt-3">
+                                        <label for="customRange3" class="form-label">隨機度</label>
+                                        <input
+                                            type="range"
+                                            class="form-range"
+                                            min="0"
+                                            max="2"
+                                            step="0.1"
+                                            id="customRange4"
+                                            onchange="changeTemperature(this.value)"
+                                        >
+                                        <span id="temperaturespan"></span>                        
+                                    </div>
+                                </div>
+                                <div class="col-sm-1 border text-center d-flex flex-column justify-content-center">
+                                    <button
+                                        id="queryButton"
+                                        type="button"
+                                        class="btn align-items-center btn-outline-primary"
+                                    >
+                                        對話》
+                                    </button>
+                                    <button
+                                        id="resetButton3"
+                                        type="button"
+                                        class="btn align-items-center btn-outline-primary"
+                                    >
+                                        《重置
+                                    </button>                    
+                                </div>
+                                <div class="col-sm border text-center">
+                                    <label for="exampleFormControlInput1" class="form-label">NPC 回應</label>
+                                    <!-- 可修改 rows 增加輸入框高度 -->
+                                    <textarea
+                                        class="form-control"
+                                        id="exampleFormControlTextarea7"
+                                        rows="10"
+                                        disabled="true"
+                                    ></textarea>                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- <div class="row border">
                 <label
                     for="exampleFormControlInput1"
                     class="form-label"
@@ -20,7 +298,6 @@
                 <div class="col-sm border text-center">
                     <div class="row border">
                         <label for="exampleFormControlInput1" class="form-label">系統預設</label>
-                        <!-- 可修改 rows 增加輸入框高度 -->
                         <textarea
                             class="form-control"
                             id="exampleFormControlTextarea1"
@@ -30,7 +307,6 @@
                     </div>
                     <div class="row border">
                         <label for="exampleFormControlInput1" class="form-label">使用者輸入</label>
-                        <!-- 可修改 rows 增加輸入框高度 -->
                         <textarea
                             class="form-control"
                             id="exampleFormControlTextarea2"
@@ -57,7 +333,6 @@
                 </div>
                 <div class="col-sm border text-center">
                     <label for="exampleFormControlInput1" class="form-label">優化的 Prompt</label>
-                    <!-- 可修改 rows 增加輸入框高度 -->
                     <textarea
                         class="form-control"
                         id="exampleFormControlTextarea3"
@@ -65,9 +340,9 @@
                         disabled="true"
                     ></textarea>                    
                 </div>
-            </div>
+            </div> -->
 
-            <div class="row border">
+            <!-- <div class="row border">
                 <label
                     for="exampleFormControlInput1"
                     class="form-label"
@@ -77,7 +352,6 @@
                 <div class="col-sm border text-center">
                     <div class="row border">
                         <label for="exampleFormControlInput1" class="form-label">Prompts</label>
-                        <!-- 可修改 rows 增加輸入框高度 -->
                         <textarea
                             class="form-control"
                             id="exampleFormControlTextarea4"
@@ -87,7 +361,6 @@
                     </div>
                     <div class="row border">
                         <label for="exampleFormControlInput1" class="form-label">Negative Prompts</label>
-                        <!-- 可修改 rows 增加輸入框高度 -->
                         <textarea
                             class="form-control"
                             id="exampleFormControlTextarea5"
@@ -125,9 +398,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="row border">
+            <!-- <div class="row border">
                 <label
                     for="exampleFormControlInput1"
                     class="form-label"
@@ -189,9 +462,9 @@
                         </div>
                     </div>
                 </div>
-            </div>            
+            </div>             -->
 
-            <div class="row border">
+            <!-- <div class="row border">
                 <label
                     for="exampleFormControlInput1"
                     class="form-label"
@@ -201,7 +474,6 @@
                 <div class="col-sm border text-center">
                     <div class="row border">
                         <label for="exampleFormControlInput1" class="form-label">提問區</label>
-                        <!-- 可修改 rows 增加輸入框高度 -->
                         <textarea
                             class="form-control"
                             id="exampleFormControlTextarea6"
@@ -254,7 +526,6 @@
                 </div>
                 <div class="col-sm border text-center">
                     <label for="exampleFormControlInput1" class="form-label">NPC 回應</label>
-                    <!-- 可修改 rows 增加輸入框高度 -->
                     <textarea
                         class="form-control"
                         id="exampleFormControlTextarea7"
@@ -262,7 +533,7 @@
                         disabled="true"
                     ></textarea>                    
                 </div>
-            </div>
+            </div> -->
 
         </div>
 
@@ -305,7 +576,39 @@
             const maxTokensDefault = 1024;
             const temperatureDefault = 0.2;
             const imageDefault = "https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg";
-
+            const promptsArray = [
+                "法國女貴族",
+                "維多利亞時代男紳士",
+                "墨西哥女畫家",
+                "美國牛仔",
+                "英國女偵探",
+                "古羅馬男角鬥士",
+                "埃及女祭司",
+                "海洋男冒險家",
+                "印度女舞者",
+                "哥德式男詩人",
+                "斯堪的納維亞女戰士",
+                "現代IT男工程師",
+                "法國女廚師",
+                "希臘男哲學家",
+                "日本女忍者",
+                "韓國男偶像",
+                "中世紀女巫",
+                "維京男海盜",
+                "摩登女模特兒",
+                "現代都市男攝影師",
+                "中國古代女學者",
+                "日本男武士",
+                "俄羅斯女芭蕾舞者",
+                "美國男重金屬音樂家",
+                "西部牛仔女槍手",
+                "未來科幻男機器人",
+                "蒸汽龐克風格女工程師",
+                "西班牙男鬥牛士",
+                "埃及女法老",
+                "超級英雄風格男戰士"
+            ]
+            
             const items = {
                 item1: {
                     loading: false,
@@ -342,7 +645,7 @@
             };
 
             const resetPrompt2 = () => {
-                textAreaPositivePrompts.value = "";
+                textAreaPositivePrompts.value = promptsArray[Math.floor(Math.random() * 29)];
                 textAreaNegativePrompts.value = "";
             };
 
